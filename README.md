@@ -32,11 +32,3 @@ The repository is organized as follows:
 
 ## License
 This project is for educational purposes under the supervision of **Dr. Mohammad Abdullah - Alwadud**.
-"@
-
-Set-Content -Path README.md -Value $content
-
-# رفع التعديل النهائي
-git add README.md
-git commit -m "Docs: Update README to match current structure"
-git push
