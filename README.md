@@ -18,9 +18,9 @@ This project is part of the **SWE 481 (Advanced Web Applications Engineering)** 
 
 ## Project Structure
 The repository is organized as follows:
-* \`/frontend\`: Source code for the Angular client application.
-* \`/backend\`: Source code for the Spring Boot server application.
-* \`.github/workflows\`: CI/CD pipelines for automated testing.
+* frontend: Source code for the Angular client application.
+* backend: Source code for the Spring Boot server application.
+* .github/workflows: CI/CD pipelines for automated testing.
 
 ## Setup & Installation
 *(Detailed setup instructions for developers will be added in Phase 2)*
