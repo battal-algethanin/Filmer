@@ -1,23 +1,27 @@
+$content = @"
 # Filmer (SWE 481)
 
 ## Project Overview
-This project is part of the SWE 481 (Advanced Web Applications Engineering) course at King Saud University. It is a full-stack web application inspired by the CS122B course, designed to allow users to browse, search, and rent movies using the IMDb dataset.
+This project is part of the **SWE 481 (Advanced Web Applications Engineering)** course at King Saud University. It is a full-stack web application inspired by the CS122B course, designed to allow users to browse, search, and rent movies using the IMDb dataset.
 
 ## Team Members
-* **[Battal Algethanin]** - [444100185]
-* **[Bader Aldakhil]** - [444102492]
-* **[Faisal Alangari]** - [444101279]
-* **[Ibrahim Alathel]** - [444105821]
+| Name | Student ID |
+|------|------------|
+| **Battal Algethanin** | **444100185** |
+| **Bader Aldakhil** | **444102492** |
+| **Faisal Alangari** | **444101279** |
+| **Ibrahim Alathel** | **444105821** |
 
 ## Technical Stack
 * **Frontend:** Angular (v16+)
-* **Backend:** Spring Boot (Java)
+* **Backend:** Spring Boot (Java 17+)
 * **Database:** PostgreSQL
 
 ## Project Structure
 The repository is organized as follows:
-* `/frontend`: Source code for the Angular client application.
-* `/backend`: Source code for the Spring Boot server application.
+* \`/frontend\`: Source code for the Angular client application.
+* \`/backend\`: Source code for the Spring Boot server application.
+* \`.github/workflows\`: CI/CD pipelines for automated testing.
 
 ## Setup & Installation
 *(Detailed setup instructions for developers will be added in Phase 2)*
@@ -28,4 +32,12 @@ The repository is organized as follows:
 * PostgreSQL
 
 ## License
-This project is for educational purposes under the supervision of Dr. MOHAMMAD ABDULLAH - ALWADUD.
+This project is for educational purposes under the supervision of **Dr. Mohammad Abdullah - Alwadud**.
+"@
+
+Set-Content -Path README.md -Value $content
+
+# رفع التعديل النهائي
+git add README.md
+git commit -m "Docs: Update README to match current structure"
+git push
