@@ -1,4 +1,3 @@
-$content = @"
 # Filmer (SWE 481)
 
 ## Project Overview
