@@ -1,7 +1,27 @@
-# Filmer (SWE 481)
-## this project is under construction
+# Filmer
+
 ## Project Overview
-This project is part of the **SWE 481 (Advanced Web Applications Engineering)** course at King Saud University. It is a full-stack web application inspired by the CS122B course, designed to allow users to browse, search, and rent movies using the IMDb dataset.
+Filmer is a full-stack web application that allows users to browse, search, and rent movies from the IMDb dataset. This project is developed as part of the **SWE 481 (Advanced Web Applications Engineering)** course at King Saud University, College of Computer and Information Sciences.
+
+The project is inspired by the University of California, Irvine course CS122B and follows modern full-stack development practices, emphasizing security, scalability, and software engineering best practices.
+
+### Project Objectives
+- Design and implement a fully functional, secure, and scalable web application
+- Apply RESTful API principles and modern web development patterns
+- Implement database integration with proper schema design
+- Develop authentication and authorization mechanisms
+- Write and maintain automated tests
+- Address performance, security, and scalability concerns
+- Follow collaborative development workflows using Git and GitHub
+
+### Key Features
+- Movie browsing and search functionality
+- Movie rental system
+- User authentication and access control
+- Responsive user interface
+- RESTful API backend
+- Secure data handling and HTTPS communication
+- Performance-optimized database queries
 
 ## Team Members
 | Name | Student ID |
@@ -11,16 +31,28 @@ This project is part of the **SWE 481 (Advanced Web Applications Engineering)** 
 | **Faisal Alangari** | **444101279** |
 | **Ibrahim Alathel** | **444105821** |
 
-## Technical Stack
+## Technology Stack
 * **Frontend:** Angular (v16+)
-* **Backend:** Spring Boot (Java 17+)
-* **Database:** PostgreSQL
+* **Backend:** Spring Boot with Java 17
+* **Database:** PostgreSQL 15
+* **Development Tools:** Docker, Maven, Git, pgAdmin
+* **Testing:** JUnit, Jasmine/Karma
+* **CI/CD:** GitHub Actions
 
-## Project Structure
-The repository is organized as follows:
-* frontend: Source code for the Angular client application.
-* backend: Source code for the Spring Boot server application.
-* .github/workflows: CI/CD pipelines for automated testing.
+## Repository Structure
+```
+Filmer/
+├── backend/          # Spring Boot server application
+│   ├── src/          # Java source code
+│   ├── lib/          # External dependencies
+│   ├── data/         # IMDb dataset files
+│   └── pom.xml       # Maven configuration
+├── frontend/         # Angular client application
+├── external/         # External tools (JDK)
+├── .github/          # CI/CD workflows and GitHub Actions
+├── docker-compose.yaml
+└── README.md
+```
 
 ## Setup & Installation
 
@@ -35,117 +67,47 @@ The repository is organized as follows:
 
 ---
 
-### 🐳 Docker Setup (Recommended)
+### Quick Start with Docker
 
-This is the **easiest and fastest** way to get started. No manual PostgreSQL installation needed!
-
-#### Step 1: Clone the Repository
+#### 1. Clone the Repository
 ```bash
 git clone https://github.com/battal-algethanin/Filmer.git
 cd Filmer
 ```
 
-#### Step 2: Start Docker Services
+#### 2. Start Services
 ```bash
-# Start PostgreSQL and pgAdmin
 docker-compose up -d
-
-# Verify services are running
-docker-compose ps
 ```
 
-**What this does:**
-- ✅ Downloads and runs PostgreSQL 15 in a container
-- ✅ Downloads and runs pgAdmin (database management tool)
-- ✅ Automatically creates the `filmer` database
-- ✅ Automatically runs `schema.sql` to create all tables
-- ✅ Sets up persistent storage (data survives container restarts)
+This will start PostgreSQL and pgAdmin. The database schema will be automatically initialized.
 
-#### Step 3: Access pgAdmin (Database Management)
+#### 3. Access pgAdmin
+- Open browser: **http://localhost:5050**
+- Login credentials are configured in `docker-compose.yml`
+- Add server connection using details from `docker-compose.yml`
 
-1. Open your browser and go to: **http://localhost:5050**
-2. Login with:
-   - **Email:** `admin@filmer.com`
-   - **Password:** `admin`
-
-3. **Add PostgreSQL Server in pgAdmin:**
-   - Right-click "Servers" → "Register" → "Server"
-   - **General Tab:**
-     - Name: `Filmer Database`
-   - **Connection Tab:**
-     - Host: `postgres` (the service name from docker-compose)
-     - Port: `5432`
-     - Database: `filmer`
-     - Username: `postgres`
-     - Password: `filmer_dev_password`
-   - Click "Save"
-
-4. **Verify Schema:**
-   - Navigate to: Servers → Filmer Database → Databases → filmer → Schemas → public → Tables
-   - You should see all 9 tables: movies, stars, genres, customers, etc.
-
-#### Step 4: Configure Environment Variables
-
-**Option A: Create `.env` file (Easiest)**
+#### 4. Configure Application
+Copy the example environment file and configure your local settings:
 ```bash
-# Copy the example file
 cd backend
 cp .env.example .env
 ```
 
-The `.env` file already has the correct values for Docker:
-```
-DB_URL=jdbc:postgresql://localhost:5432/filmer
-DB_USER=postgres
-DB_PASSWORD=filmer_dev_password
-```
+Edit `.env` file with your local database configuration.
 
-**Option B: Set in IntelliJ IDEA**
-1. Open `Run > Edit Configurations`
-2. Select your Spring Boot application
-3. Under `Environment Variables`, add:
-   ```
-   DB_URL=jdbc:postgresql://localhost:5432/filmer
-   DB_USER=postgres
-   DB_PASSWORD=filmer_dev_password
-   ```
-
-**Option C: Set in Terminal (Windows PowerShell)**
-```powershell
-$env:DB_URL="jdbc:postgresql://localhost:5432/filmer"
-$env:DB_USER="postgres"
-$env:DB_PASSWORD="filmer_dev_password"
-```
-
-**Option D: Set in Terminal (Mac/Linux)**
-```bash
-export DB_URL="jdbc:postgresql://localhost:5432/filmer"
-export DB_USER="postgres"
-export DB_PASSWORD="filmer_dev_password"
-```
-
-#### Step 5: Run the Backend (Future Phase)
-
-**Using Maven:**
+#### 5. Run Backend
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-**Using IDE:**
-- Run the main application class (will be created in future phases)
-
-The backend will start on `http://localhost:8080`
-
-#### Step 6: Run the Frontend (Future Phase)
-
+#### 6. Run Frontend
 ```bash
 cd frontend
 npm install
 npm start
 ```
-
-The frontend will start on `http://localhost:4200`
 
 ---
 
@@ -217,38 +179,92 @@ Before starting development, ensure:
 - [x] pgAdmin accessible at http://localhost:5050
 - [x] Database `filmer` visible in pgAdmin with 9 tables
 - [x] Environment variables configured (`.env` file or IDE)
-- [ ] Backend starts without errors (Phase 3)
-- [ ] Frontend starts without errors (Phase 3)
+## Useful Commands
+
+### Docker
+```bash
+docker-compose up -d          # Start services
+docker-compose down           # Stop services
+docker-compose down -v        # Stop and remove data
+docker-compose logs -f        # View logs
+docker-compose ps             # Check status
+```
+
+### Development
+```bash
+# Backend
+cd backend
+mvn clean install
+mvn spring-boot:run
+
+# Frontend
+cd frontend
+npm install
+npm start
+```
+
+## Troubleshooting
+
+**Port conflicts**: If ports 5432 or 5050 are in use, modify port mappings in `docker-compose.yml`
+
+**Database connection issues**: Verify environment variables match `docker-compose.yml` configuration
+
+**Schema not loading**: Run `docker-compose down -v && docker-compose up -d` to reset database
 
 ---
 
-### 🔒 Security Notes
+## Environment Configuration
 
-> **IMPORTANT:** The credentials in `docker-compose.yml` are for **local development only**!
-> 
-> - ✅ Safe for local development
-> - ❌ **NEVER use these in production**
-> - ✅ Production should use proper secret management (AWS Secrets Manager, Azure Key Vault, etc.)
-> - ✅ The `.env` file is in `.gitignore` and won't be committed
+**Important:** This project uses environment variables for sensitive configuration. Never commit credentials, API keys, or secrets to GitHub.
+
+Create a `.env` file in the backend directory with your local database configuration:
+```
+DB_URL=jdbc:postgresql://localhost:5432/filmer
+DB_USER=your_username
+DB_PASSWORD=your_password
+```
+
+The `.env` file is included in `.gitignore` and will not be committed to the repository.
+
+## Development Workflow
+
+### Branching Strategy
+- Each team member works on their own development branch
+- All changes must be submitted via Pull Requests (PRs)
+- PRs require at least two reviewer approvals before merging
+- Direct commits to main branch are blocked
+
+### Code Quality
+- All code must pass automated tests before merging
+- GitHub Actions run linting, formatting, and testing checks
+- Follow clean code principles and proper documentation
+- All API endpoints must be documented with request/response formats
+
+## Testing
+
+This project includes comprehensive test coverage:
+- **Unit Tests**: Backend services and frontend components
+- **Integration Tests**: API endpoints and database operations
+- **End-to-End Tests**: Complete user workflows
+- **Performance Tests**: Response time and load testing
+
+Run tests before submitting any PR:
+```bash
+# Backend tests
+cd backend
+mvn test
+
+# Frontend tests
+cd frontend
+npm test
+```
+
+## Academic Integrity
+
+This project is developed for educational purposes as part of the SWE 481 course at King Saud University, College of Computer and Information Sciences. All work must follow academic integrity policies.
+
+**Course Instructor:** Dr. Mohammad Abdullah - Alwadud
 
 ---
 
-### 📊 What's Running?
-
-| Service | URL | Purpose |
-|---------|-----|---------|
-| **PostgreSQL** | `localhost:5432` | Database server |
-| **pgAdmin** | http://localhost:5050 | Database management UI |
-| **Backend** | http://localhost:8080 | Spring Boot API (Phase 3) |
-| **Frontend** | http://localhost:4200 | Angular app (Phase 3) |
-
----
-
-
-### Prerequisites
-* Java JDK 17+
-* Node.js & npm
-* PostgreSQL
-
-## License
-This project is for educational purposes under the supervision of **Dr. Mohammad Abdullah - Alwadud**.
+*This project follows the specifications and requirements outlined in the SWE 481 course curriculum and is inspired by UC Irvine's CS122B course.*
