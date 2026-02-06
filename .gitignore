@@ -1,0 +1,78 @@
+# Java compiled classes
+*.class
+bin/
+target/
+
+# JAR files (except Maven wrapper)
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# JDK (portable/local installations)
+jdk-*/
+openjdk-*/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Build outputs
+build/
+dist/
+out/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables and secrets - NEVER COMMIT THESE
+.env
+.env.local
+.env.*.local
+*.env
+**/.env
+
+# Credentials and API keys
+credentials.json
+secrets.json
+**/secrets/
+config/local.properties
+application-local.properties
+application-local.yml
+
+# Database data (if local dumps)
+*.sql.gz
+*.dump
+
+# IMDb Data Files (HUGE - must be downloaded separately)
+backend/data/
+data/*.tsv.gz
+*.tsv.gz
+*.tsv
+
+# Backend specific
+backend/jdk-17.0.2/
+backend/bin/
+backend/*.jar
+backend/jdk17.zip
+
+# Angular specific
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.angular/
+.cache/
+
+# Docker volumes (managed by docker-compose)
+postgres_data/
+pgadmin_data/
