@@ -1,0 +1,51 @@
+<div class="home-container">
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>{{ title }}</h1>
+      <p class="tagline">Your gateway to unlimited movies</p>
+      <div class="cta-buttons">
+        <button routerLink="/connection-test" class="btn btn-primary">
+          Test Connection
+        </button>
+        <button class="btn btn-secondary" disabled title="Coming soon">
+          Browse Movies (Coming Soon)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-section">
+    <h2>Key Features</h2>
+    <div class="features-grid">
+      <div *ngFor="let feature of features" class="feature-card">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <div class="info-card">
+      <h3>🚀 Development Status</h3>
+      <p>
+        This is the frontend for the Filmer Movie Rental System. The application is currently
+        under development with core features being implemented. Start by testing the end-to-end
+        connectivity between the frontend and backend.
+      </p>
+      <p>
+        <strong>Technology Stack:</strong> Angular 17 + Spring Boot + PostgreSQL
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h3>✅ Getting Started</h3>
+      <ol>
+        <li>Ensure PostgreSQL is running (use Docker if available)</li>
+        <li>Start the Spring Boot backend on port 8080</li>
+        <li>Navigate to the Connection Test page to verify connectivity</li>
+        <li>Check the browser console for any errors</li>
+      </ol>
+    </div>
+  </div>
+</div>

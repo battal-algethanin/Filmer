@@ -111,6 +111,149 @@ npm start
 
 ---
 
+## 🔗 End-to-End Connection Test
+
+This section describes how to verify that your full stack is properly connected: **Angular Frontend → Spring Boot Backend → PostgreSQL Database**.
+
+### Prerequisites for Connection Test
+Before running the connection test, ensure the following services are running:
+
+1. **PostgreSQL Database** (via Docker):
+   ```bash
+   docker-compose up -d postgres
+   ```
+   - Default hostname: `localhost`
+   - Default port: `5432`
+   - Database name: `filmer`
+   - Username: `postgres`
+   - Password: `filmer_dev_password` (as configured in `docker-compose.yaml`)
+
+2. **Spring Boot Backend**:
+   ```bash
+   cd backend
+   export DB_URL="jdbc:postgresql://localhost:5432/filmer"
+   export DB_USER="postgres"
+   export DB_PASSWORD="filmer_dev_password"
+   mvn spring-boot:run
+   ```
+   - Backend runs on: `http://localhost:8080`
+   - Health API endpoint: `http://localhost:8080/api/v1/health`
+   - Database connectivity test endpoint: `http://localhost:8080/api/v1/health/db`
+
+3. **Angular Frontend**:
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+   - Frontend runs on: `http://localhost:4200`
+   - Angular dev server opens automatically (or navigate manually)
+
+### Running the Connection Test
+
+Once all three services are running:
+
+1. Open your browser and navigate to: **http://localhost:4200**
+2. Click on the **"Connection Test"** link in the navigation menu
+3. Click the **"Test Connection"** button
+
+### Expected Results
+
+**Success Scenario:**
+- Frontend displays: ✅ **Connection Successful!**
+- You'll see a JSON response from the backend containing:
+  - `success`: `true`
+  - `database_status`: `"UP"`
+  - `result`: `1` (from the SELECT 1 query)
+  - `message`: `"Database connection successful"`
+
+**Failure Scenarios:**
+
+| Issue | Symptom | Solution |
+|-------|---------|----------|
+| PostgreSQL not running | Error: "Cannot connect to backend" or "Database connection failed (503)" | Run `docker-compose up -d postgres` |
+| Backend not running | Error: "Cannot connect to backend server. Is it running on http://localhost:8080?" | Run `mvn spring-boot:run` in backend folder |
+| CORS configuration error | Error: "Access to XMLHttpRequest blocked by CORS policy" | CORS is already configured in backend (src/main/java/com/filmer/config/CorsConfig.java) |
+| Environment variables not set | Backend runs but cannot connect to database | Set environment variables: DB_URL, DB_USER, DB_PASSWORD |
+
+### Test Endpoint Details
+
+**Endpoint:** `GET /api/v1/health/db`
+
+**Purpose:** Tests database connectivity by executing a simple `SELECT 1` query
+
+**Request:**
+```http
+GET http://localhost:8080/api/v1/health/db
+```
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "result": 1,
+    "message": "Database connection successful",
+    "database_status": "UP"
+  }
+}
+```
+
+**Failure Response (503 Service Unavailable):**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "DB_CONNECTION_ERROR",
+    "message": "Database connection failed"
+  }
+}
+```
+
+### Troubleshooting Connection Issues
+
+1. **Check Docker Services:**
+   ```bash
+   docker-compose ps
+   # Should show postgres and pgadmin as "Up"
+   ```
+
+2. **Verify Database is Accessible:**
+   ```bash
+   docker exec -it filmer-postgres psql -U postgres -d filmer -c "SELECT 1"
+   # Should return: 1
+   ```
+
+3. **Check Backend is Running:**
+   ```bash
+   curl http://localhost:8080/api/v1/health
+   # Should return: {"success":true,"data":{"status":"UP","database":"UP",...}}
+   ```
+
+4. **Check Frontend Network Requests:**
+   - Open browser DevTools (F12)
+   - Navigate to the Network tab
+   - Click "Test Connection" button
+   - Look for the request to `http://localhost:8080/api/v1/health/db`
+   - Check the response tab for details
+
+5. **View Backend Logs:**
+   ```bash
+   # Just look at the terminal where you ran: mvn spring-boot:run
+   # You should see SQL queries being executed and connection events
+   ```
+
+### Next Steps
+
+Once the connection test is successful:
+- ✅ Your development environment is properly configured
+- ✅ Frontend ↔ Backend communication is working
+- ✅ Backend ↔ Database communication is working
+- You can now proceed to implement and test application features
+
+---
+
 ### 🛠️ Docker Commands Reference
 
 ```bash
