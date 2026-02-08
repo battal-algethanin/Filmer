@@ -1,0 +1,105 @@
+<div class="connectivity-test-container">
+  <div class="test-card">
+    <h2>End-to-End Connectivity Test</h2>
+    <p class="description">
+      Test the connection between Angular frontend → Spring Boot backend → PostgreSQL database
+    </p>
+
+    <div class="test-flow">
+      <div class="step">
+        <div class="step-icon">🖥️</div>
+        <div class="step-text">
+          <h4>Frontend (Angular)</h4>
+          <p>You are here</p>
+        </div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-icon">🔧</div>
+        <div class="step-text">
+          <h4>Backend (Spring Boot)</h4>
+          <p>localhost:8080</p>
+        </div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-icon">🗄️</div>
+        <div class="step-text">
+          <h4>Database (PostgreSQL)</h4>
+          <p>localhost:5432</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-controls">
+      <button
+        (click)="runConnectivityTest()"
+        [disabled]="isLoading"
+        class="btn btn-primary"
+      >
+        {{ isLoading ? 'Testing...' : 'Test Connection' }}
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="connectionStatus === 'testing'" class="status-message loading">
+      <div class="spinner"></div>
+      <p>Running connectivity test...</p>
+    </div>
+
+    <!-- Success State -->
+    <div *ngIf="connectionStatus === 'success' && result" class="status-message success">
+      <div class="status-icon">✅</div>
+      <h3>Connection Successful!</h3>
+      <p class="timestamp">Tested at: {{ result.timestamp }}</p>
+
+      <div class="result-details">
+        <h4>Backend Response:</h4>
+        <pre class="json-display">{{ formatJson(result.data) }}</pre>
+
+        <div class="status-grid" *ngIf="result.data?.data">
+          <div class="status-item">
+            <label>Database Status:</label>
+            <span class="status-value">{{ result.data.data.database_status }}</span>
+          </div>
+          <div class="status-item" *ngIf="result.data.data.result !== undefined">
+            <label>Database Query Result:</label>
+            <span class="status-value">{{ result.data.data.result }}</span>
+          </div>
+          <div class="status-item">
+            <label>Message:</label>
+            <span class="status-value">{{ result.data.data.message }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="connectionStatus === 'error' && result" class="status-message error">
+      <div class="status-icon">❌</div>
+      <h3>Connection Failed</h3>
+      <p class="timestamp">Tested at: {{ result.timestamp }}</p>
+
+      <div class="error-details">
+        <h4>Error Message:</h4>
+        <p class="error-text">{{ result.error }}</p>
+
+        <div class="troubleshooting">
+          <h5>Troubleshooting Steps:</h5>
+          <ul>
+            <li>✓ Ensure PostgreSQL is running: <code>docker-compose up -d postgres</code></li>
+            <li>✓ Ensure Spring Boot backend is running: <code>mvn spring-boot:run</code> (in backend folder)</li>
+            <li>✓ Check that backend is accessible at <code>http://localhost:8080</code></li>
+            <li>✓ Check browser console for detailed error information</li>
+            <li>✓ Verify CORS is properly configured in the backend</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Idle State -->
+    <div *ngIf="connectionStatus === 'idle'" class="status-message idle">
+      <p>Click the "Test Connection" button to verify end-to-end connectivity.</p>
+    </div>
+  </div>
+</div>

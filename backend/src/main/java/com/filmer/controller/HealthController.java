@@ -1,11 +1,16 @@
 package com.filmer.controller;
 
 import com.filmer.dto.response.ApiResponse;
+import com.filmer.dto.response.ApiErrorResponse;
 import com.filmer.dto.response.HealthResponse;
+import com.filmer.service.HealthCheckService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 /**
  * Controller for utility endpoints.
@@ -14,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 public class HealthController {
+
+    @Autowired
+    private HealthCheckService healthCheckService;
 
     /**
      * Health check endpoint to verify API availability and database connectivity.
@@ -31,8 +39,34 @@ public class HealthController {
      */
     @GetMapping("/health")
     public ResponseEntity<ApiResponse<HealthResponse>> checkHealth() {
-        // TODO: Implement actual health check logic
         HealthResponse health = new HealthResponse("UP", "UP");
-        return ResponseEntity.status(501).body(ApiResponse.success(health));
+        return ResponseEntity.ok(ApiResponse.success(health));
+    }
+
+    /**
+     * Database connectivity test endpoint.
+     * 
+     * <p>Executes a simple SELECT 1 query to verify database connectivity.
+     * Used for end-to-end connectivity testing from frontend to backend to database.</p>
+     * 
+     * @return ResponseEntity containing database connectivity test results
+     * 
+     * <p><b>Responses:</b></p>
+     * <ul>
+     *   <li>200 OK - Database connection successful with query result</li>
+     *   <li>503 Service Unavailable - Database connection failed</li>
+     * </ul>
+     */
+    @GetMapping("/health/db")
+    public ResponseEntity<?> checkDatabaseConnectivity() {
+        Map<String, Object> result = healthCheckService.checkDatabaseConnectivity();
+        
+        // Return 200 if successful, 503 if database is down
+        if ((Boolean) result.get("success")) {
+            return ResponseEntity.ok(ApiResponse.success(result));
+        } else {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(ApiErrorResponse.of("DB_CONNECTION_ERROR", "Database connection failed"));
+        }
     }
 }
